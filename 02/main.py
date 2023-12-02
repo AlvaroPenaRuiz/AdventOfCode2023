@@ -34,6 +34,19 @@ def is_posible(game, green, red, blue):
     return is_green_posible and is_red_posible and is_blue_posible
 
 
+def get_minimum_balls_and_power(game):
+    game['min_green'] = 0
+    game['min_red'] = 0
+    game['min_blue'] = 0
+    for pick in game['green']: 
+        if pick > game['min_green']: game['min_green'] = pick
+    for pick in game['red']: 
+        if pick > game['min_red']: game['min_red'] = pick
+    for pick in game['blue']: 
+        if pick > game['min_blue']: game['min_blue'] = pick
+    game['power'] = game['min_green'] * game['min_red'] * game['min_blue']
+    return game
+
 decoded_data = [decode_data(line) for line in rawdata.split('\n')]
 
 # Exercise 1
@@ -43,3 +56,7 @@ total_exercise1 = reduce(lambda a,b : a + b, [game["id"] for game in filter(lamb
 print(total_exercise1)
 
 # Exercise 2
+improved_data = [get_minimum_balls_and_power(game) for game in decoded_data]
+total_exercise2 = reduce(lambda a,b : a+b, [game['power'] for game in improved_data])
+
+print(total_exercise2)
